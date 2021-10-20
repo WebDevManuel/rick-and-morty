@@ -1,0 +1,5 @@
+.characterCard {
+  background: var(--color-background-card);
+  margin: 0.75rem;
+  border-radius: 1rem;
+}

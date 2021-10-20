@@ -1,5 +1,6 @@
-import { createElement } from './lib/elements';
+import { createElement } from './lib/elements.js';
 import './style.css';
+import createCharacterCard from './components/characterCard.js';
 
 function renderApp() {
   const appElement = document.querySelector('#app');
@@ -21,7 +22,10 @@ function renderApp() {
     {
       className: 'main',
     },
-    [createElement('p', { textContent: "Be exited what's comming next " })]
+    [
+      createCharacterCard({ name: 'Rick', location: 'Earth' }),
+      createCharacterCard({ name: 'Morty', location: 'Earth' }),
+    ]
   );
 
   appElement.append(headerElement, mainElement);
