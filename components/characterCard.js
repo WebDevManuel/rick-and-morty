@@ -23,9 +23,7 @@ export default function createCharacterCard({
       createElement('h2', { textContent: name }),
       createElement('p', { textContent: `${status} - ${species}` }),
       createElement('h3', { textContent: 'Last known location:' }),
-      createElement('p', {
-        textContent: lastKnownLocation,
-      }),
+      createElement('p', { textContent: lastKnownLocation }),
       createElement('h3', { textContent: 'First seen in:' }),
       firstEpisodeElement,
     ]
