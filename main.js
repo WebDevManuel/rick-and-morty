@@ -1,7 +1,8 @@
 import { createElement } from './lib/elements.js';
 import './style.css';
 import createCharacterCard from './components/characterCard.js';
-import { fetchCharacters } from './lib/characters';
+import { fetchCharacters } from './lib/characters.js';
+import createSearchBar from './components/searchBar.js';
 
 async function renderApp() {
   const appElement = document.querySelector('#app');
@@ -18,38 +19,28 @@ async function renderApp() {
     ]
   );
 
+  async function handleSubmit(searchQuery) {
+    console.log(searchQuery);
+    const response = await fetch(
+      `https://rickandmortyapi.com/api/character/?name=${searchQuery}`
+    );
+    const body = await response.json();
+    const characters = body.results;
+    const characterElements = characters.map((character) =>
+      createCharacterCard(character)
+    );
+    console.log(characterElements);
+    mainElement.innerHTML = '';
+    mainElement.append(...characterElements);
+  }
+
+  const searchBar = createSearchBar(handleSubmit);
+
   const characters = await fetchCharacters();
 
   const characterCards = characters.map((character) =>
     createCharacterCard(character)
   );
-
-  /*   const characters = [
-    {
-      name: 'Pawnshop Clerk',
-      imgSrc: 'https://rickandmortyapi.com/api/character/avatar/258.jpeg',
-      status: 'Alive',
-      race: 'Alien',
-      lastKnownLocation: 'Pawn Shop Planet',
-      firstSeenIn: 'Raising Gazorpazorp',
-    },
-    {
-      name: 'Pencilvester',
-      imgSrc: 'https://rickandmortyapi.com/api/character/avatar/259.jpeg',
-      status: 'Dead',
-      race: 'Alien',
-      lastKnownLocation: 'Earth (Replacement Dimension)',
-      firstSeenIn: 'Total Rickall',
-    },
-    {
-      name: 'Dr. Xenon Bloom',
-      imgSrc: 'https://rickandmortyapi.com/api/character/avatar/108.jpeg',
-      status: 'Dead',
-      race: 'Humanoid',
-      lastKnownLocation: 'Anatomy Park',
-      firstSeenIn: 'Anatomy Park',
-    },
-  ]; */
 
   const mainElement = createElement(
     'main',
@@ -59,7 +50,7 @@ async function renderApp() {
     characterCards
   );
 
-  appElement.append(headerElement, mainElement);
+  appElement.append(headerElement, searchBar, mainElement);
 }
 
 renderApp();
