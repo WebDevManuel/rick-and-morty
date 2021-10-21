@@ -2,7 +2,7 @@ import { createElement } from './lib/elements.js';
 import './style.css';
 import createCharacterCard from './components/characterCard.js';
 
-function renderApp() {
+async function renderApp() {
   const appElement = document.querySelector('#app');
 
   const headerElement = createElement(
@@ -17,7 +17,14 @@ function renderApp() {
     ]
   );
 
-  const characters = [
+  const response = await fetch('https://rickandmortyapi.com/api/character/');
+  const body = await response.json();
+  const characters = body.results;
+  const characterCards = characters.map((character) =>
+    createCharacterCard(character)
+  );
+
+  /*   const characters = [
     {
       name: 'Pawnshop Clerk',
       imgSrc: 'https://rickandmortyapi.com/api/character/avatar/258.jpeg',
@@ -42,11 +49,7 @@ function renderApp() {
       lastKnownLocation: 'Anatomy Park',
       firstSeenIn: 'Anatomy Park',
     },
-  ];
-
-  const characterCards = characters.map(function (character) {
-    return createCharacterCard(character);
-  });
+  ]; */
 
   const mainElement = createElement(
     'main',
